@@ -24,7 +24,13 @@ serve(async (req) => {
       throw new Error('Missing required secrets');
     }
 
-    const serviceAccount = JSON.parse(serviceAccountJson);
+    let serviceAccount;
+    try {
+      serviceAccount = JSON.parse(serviceAccountJson);
+    } catch (parseError) {
+      console.error('Failed to parse GOOGLE_SERVICE_ACCOUNT:', serviceAccountJson.substring(0, 100));
+      throw new Error('GOOGLE_SERVICE_ACCOUNT must be a valid JSON with the complete service account credentials');
+    }
     console.log('Service account loaded for:', serviceAccount.client_email);
 
     // Get OAuth token
