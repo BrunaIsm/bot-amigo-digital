@@ -77,7 +77,10 @@ serve(async (req) => {
       { headers: { Authorization: `Bearer ${access_token}` } }
     );
 
-    const { files } = await driveResponse.json();
+    const driveData = await driveResponse.json();
+    console.log('Drive API response:', JSON.stringify(driveData));
+    
+    const { files } = driveData;
     console.log(`Found ${files?.length || 0} spreadsheets`);
 
     if (!files || files.length === 0) {
